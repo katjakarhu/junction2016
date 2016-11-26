@@ -16,26 +16,26 @@ Including another URLconf
 
 from django.conf.urls import url, include
 from hapiapp.models import FakeNews
+from hapiapp.views import FakeNewsList
+from hapiapp.serializers import FakeNewsSerializer
 from rest_framework import routers, serializers, viewsets
 
-# Serializers define the API representation.
-class FakeNewsSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = FakeNews
-        fields = ('url', 'name', 'source', 'isfake')
-
 # ViewSets define the view behavior.
-class FakeNewsViewSet(viewsets.ModelViewSet):
-    queryset = FakeNews.objects.all()
-    serializer_class = FakeNewsSerializer
+#class FakeNewsViewSet(viewsets.ModelViewSet):
+#    queryset = FakeNews.objects.all()
+#    serializer_class = FakeNewsSerializer
+
 
 # Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'fakenews', FakeNewsViewSet)
+#router = routers.DefaultRouter()
+#router.register(r'fakenews', FakeNewsList, base_name='asdf')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+   #url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url('^fakenews', FakeNewsList.as_view()),
+
+    
 ]
