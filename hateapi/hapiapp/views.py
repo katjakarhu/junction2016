@@ -9,7 +9,7 @@ from rest_framework.response import Response
 class FakeNewsList(generics.ListAPIView):
     queryset = FakeNews.objects.all()
 
-    print(queryset)
+    # print(queryset)
     
     serializer_class = FakeNewsSerializer
 
@@ -37,10 +37,12 @@ class FakeNewsList(generics.ListAPIView):
             jsonDicts[i]['url'] = urlParam
             if i%2 == 0:
                 source = "Very Respectable Authority Says So"
-                foo = "true"111
+                sourceUrl = "http://www.google.com/"
+                foo = "true"
             else:
                 foo = "false"
                 source = "Underpants Gnomes LLC"
+                sourceUrl = "http://www.google.com/"
             jsonDicts[i]['isFake'] = foo
             jsonDicts[i]['source'] = source
             i = i + 1
