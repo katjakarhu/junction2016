@@ -12,3 +12,10 @@ class FakeNews(models.Model):
     name = models.CharField(max_length=255)
     source = models.CharField(max_length=255)
     isFake = models.BooleanField()
+
+class SentimentData(models.Model):
+    words = models.CharField(max_length=2048)
+    url = models.CharField(max_length=255)
+    containsHateSpeech = models.BooleanField()
+    score = models.IntegerField(default=0)
+    created =  models.DateTimeField(default=timezone.now)

@@ -1,4 +1,4 @@
-from hapiapp.models import FakeNews, FakeSite
+from hapiapp.models import FakeNews, FakeSite, SentimentData
 from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
@@ -11,4 +11,9 @@ class FakeSiteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = FakeSite
         fields = ('site')
+
+class SentimentDataSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SentimentData
+        fields = ('text', 'url', 'isFake')
 

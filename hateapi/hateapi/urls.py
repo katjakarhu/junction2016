@@ -15,19 +15,9 @@ Including another URLconf
 """
 
 from django.conf.urls import url, include
-from hapiapp.models import FakeNews
-from hapiapp.views import FakeNewsList
-from hapiapp.serializers import FakeNewsSerializer
+from hapiapp.views import FakeNewsList, SentimentList
 from rest_framework import routers, serializers, viewsets
 
-# ViewSets define the view behavior.
-#class FakeNewsViewSet(viewsets.ModelViewSet):
-#    queryset = FakeNews.objects.all()
-#    serializer_class = FakeNewsSerializer
-
-
-# Routers provide an easy way of automatically determining the URL conf.
-#router = routers.DefaultRouter()
 #router.register(r'fakenews', FakeNewsList, base_name='asdf')
 
 # Wire up our API using automatic URL routing.
@@ -36,6 +26,7 @@ urlpatterns = [
    #url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url('^fakenews', FakeNewsList.as_view()),
+    url('^hatespeech/', SentimentList.as_view()),
 
     
 ]
