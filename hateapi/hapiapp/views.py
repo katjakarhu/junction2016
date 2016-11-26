@@ -48,12 +48,10 @@ class FakeNewsList(generics.ListAPIView):
             # Let's remove unnecessary crap so that the actual domain is all that's left
             while domain.count('.') > 1:
                 domain = domain.partition('.')[2]
-            print(urlParam)
-            print(parsed_uri.scheme + ", domain: " + domain)
+           
         
             filteredSet = self.queryset.filter(site__contains=domain)
             if len(filteredSet) > 0 and domain != "twitter.com":
-                #print(filteredSet)
                 return filteredSet
             else:
                 return None
@@ -74,8 +72,7 @@ class FakeNewsList(generics.ListAPIView):
         i = 0
         for urlParam in urlParamList:
             fakeData = amIFake(urlParam)
-            #print(fakeData.all()[0].site)
-            
+                       
             # Site is not fake, woohoo!
             if fakeData == None:
                 source = ""
