@@ -1,7 +1,7 @@
 from django.db import models
 
 class FakeSite(models.Model):
-    domain = models.CharField(max_length=255)
+    site = models.CharField(max_length=255)
 
 class FakeNews(models.Model):
     url = models.CharField(max_length=255)
