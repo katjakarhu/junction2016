@@ -35,19 +35,27 @@ class FakeNewsList(generics.ListAPIView):
         # Check if the domain is classified as a fake news site in out db
         # If it is, return the data from DB, else return None
         def amIFake(urlParam):
+            #parsed_uri = urlparse(urlParam)
+            #domain = parsed_uri.netloc
+          
+            if urlParam.startswith("http"):
+                pass
+            else:
+                urlParam = "http://" + urlParam
+
             parsed_uri = urlparse(urlParam)
-            domain = '{uri.netloc}'.format(uri=parsed_uri)
+            domain = parsed_uri.netloc
             # Let's remove unnecessary crap so that the actual domain is all that's left
             while domain.count('.') > 1:
                 domain = domain.partition('.')[2]
-                
-            print(domain)
+            print(urlParam)
+            print(parsed_uri.scheme + ", domain: " + domain)
         
             filteredSet = self.queryset.filter(site__contains=domain)
-            if len(filteredSet) > 0:
+            if len(filteredSet) > 0 and domain != "twitter.com":
+                #print(filteredSet)
                 return filteredSet
             else:
-                filteredSet = self.queryset.filter(site__contains=parsed_uri)
                 return None
 
         # HTTP GET parameters are here
@@ -66,6 +74,7 @@ class FakeNewsList(generics.ListAPIView):
         i = 0
         for urlParam in urlParamList:
             fakeData = amIFake(urlParam)
+            #print(fakeData.all()[0].site)
             
             # Site is not fake, woohoo!
             if fakeData == None:
