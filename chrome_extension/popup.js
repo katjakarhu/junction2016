@@ -1,20 +1,14 @@
-function getCurrentTabUrl(callback) {
-  var queryInfo = {
-    active: true,
-    currentWindow: true
-  };
-
-  chrome.tabs.query(queryInfo, function(tabs) {
-    var tab = tabs[0];
-    var url = tab.url;
-    console.assert(typeof url == 'string', 'tab.url should be a string');
-
-    callback(url);
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-  getCurrentTabUrl(function(url) {
-    //renderStatus();
+  var stats;
+  getCurrentDocumentOnSelectedTab(function(dom) {
+    stats = JSON.parse(dom.getElementById('hapiStats').innerHTML);
   });
 });
+
+function getCurrentDocumentOnSelectedTab(callback) {
+  chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.sendRequest(tab.id, {action: "getDOM"}, function(response) {
+      callback(response.dom);
+    });
+  });
+}
