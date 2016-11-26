@@ -1,5 +1,5 @@
 var props =  {
-  apiBaseUrl: 'http://localhost:8000/',
+  apiBaseUrl: 'http://localhost:8000/fakenews?',
   numberOfUrlsPerRequest: 10,
   xhrTimeout: 5000
 };
@@ -10,54 +10,81 @@ var hapiStats = {
 };
 
 function startHapi() {
-  var links = document.links;
-  var urlsToBeChecked = [];
-  for (var i = 0; i < links.length; i++) {
-
-    if (urlsToBeChecked.length < 11) {
-      urlsToBeChecked.push(links[i]);
-      continue;
+  var documentLinks = document.links;
+  alert(document.links.length);
+  var storage =  {"linkStorage":[]};
+  var chosenOnes = [];
+  for (var i = 0; i < documentLinks.length; i++) {
+    var currentLink = documentLinks[i];
+    if (currentLink.href.startsWith('javascript') === false) {
+      if (chosenOnes.length < getLimit()) {
+        chosenOnes.push(currentLink);
+      } else {
+        storage.linkStorage.push(chosenOnes);
+        chosenOnes = [];
+      }
     }
+  }
 
-    checkUrls(urlsToBeChecked, function (data) {
-      response = JSON.parse(data);
-      urlsToBeChecked = [];
-      // Handle data from api
+  sieveTheFakeAndTheHate(storage);
+}
+
+function getLimit() {
+  return (props.numberOfUrlsPerRequest + 1);
+}
+
+function addLinksToChosenOnes(links) {
+  chosenOnes.linkStorage.push(links);
+}
+
+function sieveTheFakeAndTheHate(storage) {
+  for (var i = 0; i < storage.linkStorage.length; i++) {
+    var currentStorage = storage.linkStorage[i];
+
+    prepareApiCallUrl(currentStorage, function(apiCallUrl) {
+      retrieveTheTruthFromTheTruthServer(apiCallUrl, function(theTruth) {
+        if (!theTruth) {
+          console.log("The truth.. there is none");
+        } else {
+          handleTheTruth(currentStorage, theTruth);
+        }
+      });
     });
-
-    // var currentInnerHTML = links[i].innerHTML
-    // links[i].innerHTML = "<span class='warning'>" + currentInnerHTML + "</span>";
   }
 }
 
-function checkUrls(urls, callback) {
+function retrieveTheTruthFromTheTruthServer(apiCallUrl, truthCall) {
   var xhr = new XMLHttpRequest();
   xhr.timeout = props.xhrTimeout;
-
-  var apiCallUrl;
-  prepareUrlParameters(urls, function(data) {
-    apiCallUrl = data;
-
-    xhr.open('GET', apiCallUrl, true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var response = xhr.responseText;
-          callback(response);
-        } else {
-          console.log('HapiError', xhr.statusText);
-        }
+  xhr.open('GET', apiCallUrl, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var theTruth = JSON.parse(xhr.responseText).response;
+        truthCall(theTruth);
+      } else {
+        console.log('HapiError', xhr.statusText);
+        callBack(null);
       }
-    };
-    xhr.ontimeout = function(e) {
-      console.log('XMLHttpRequest timeout');
-    };
+    }
+  };
+  xhr.ontimeout = function(e) {
+    console.log('XMLHttpRequest timeout');
+    truthCall(null);
+  };
 
-    xhr.send();
-  }); 
+  xhr.send();
 }
 
-function prepareUrlParameters(urls, callback) {
+function handleTheTruth(toBeTheTruthOrNotToBe, theTruth) {
+  console.log("HAHAA THE TRUUTH IS HIAR HARR HARR");
+}
+
+    // var currentInnerHTML = links[i].innerHTML
+    // links[i].innerHTML = "<span class='warning'>" + currentInnerHTML + "</span>";
+
+
+function prepareApiCallUrl(urls, callback) {
   var url = props.apiBaseUrl;
 
   for (var i = 0; i < urls.length; i++) {
@@ -80,4 +107,4 @@ function insertStats() {
   document.appendChild(statsDiv);
 }
 
-startHapi();
+document.body.onload = startHapi();
