@@ -9,7 +9,8 @@ class FakeNewsList(generics.ListAPIView):
     serializer_class = FakeNewsSerializer
 
     def get_queryset(self):
-      
+        queryset = FakeNews.objects.all()
+
 
         #queryset = super(FakeNewsList, self).get_queryset()
         query_params = self.request.query_params
@@ -25,10 +26,10 @@ class FakeNewsList(generics.ListAPIView):
                         
         
         
-        #urlparam = query_filters.get("url")
-        #if urlparam is not None:
-        #    print("!!!!!!!!!!!!!! " + urlparam)
-        #    queryset = queryset.filter(fakenews__url=urlparam)
+        urlparam = query_params.values()
+        #
+        if urlparam is not None:
+            print(urlparam)
+            queryset = queryset.filter(url=urlparam)
 
-
-        return queryset
+            return queryset
