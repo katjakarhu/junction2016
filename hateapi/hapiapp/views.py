@@ -9,21 +9,19 @@ from rest_framework.response import Response
 from urllib.parse import urlparse
         
 class FakeNewsList(generics.ListAPIView):
- 
+    # This is the fake news site data we have in the DB
     queryset = FakeSite.objects.all()
 
-
-    print(queryset)
-    
     serializer_class = FakeSiteSerializer
 
-
-            
+    # Here we construct a JSON response
     def list(self, request, *args, **kwargs):
+        # Check if the domain is classified as a fake news site in out db
+        # If it is, return the data from DB, else return None
         def amIFake(urlParam):
             parsed_uri = urlparse(urlParam)
             domain = '{uri.netloc}'.format(uri=parsed_uri)
-            # Lets remove unnecessary crap so that the actual domain is all that's left
+            # Let's remove unnecessary crap so that the actual domain is all that's left
             while domain.count('.') > 1:
                 domain = domain.partition('.')[2]
                 
@@ -36,7 +34,7 @@ class FakeNewsList(generics.ListAPIView):
                 filteredSet = self.queryset.filter(site__contains=parsed_uri)
                 return None
 
-
+        # HTTP GET parameters are here
         query_dict = self.request.query_params
         query_keys = query_dict.keys()
         if len(query_keys) != 1:
@@ -44,7 +42,8 @@ class FakeNewsList(generics.ListAPIView):
     
         query_filters = []
         custom_filters = []
-        
+
+        # We want to go through all the URL -parameters
         urlParamList = query_dict.getlist("url")
 
         jsonDicts = {"response":[]}
@@ -52,19 +51,17 @@ class FakeNewsList(generics.ListAPIView):
         for urlParam in urlParamList:
             fakeData = amIFake(urlParam)
             
+            # Site is not fake, woohoo!
             if fakeData == None:
                 source = ""
                 sourceUrl = ""
                 foo = "false"
-            else:
+            else: # It's a fake!
                 foo = "true"
                 source = fakeData.all()[0].sourcename
                 sourceUrl = fakeData.all()[0].sourceurl
             jsonDicts['response'].append({"url":urlParam,"sourceUrl":sourceUrl, "source":source, "isFake":foo})
             i = i + 1
-            
-        
-
         
         return Response(jsonDicts)
 
