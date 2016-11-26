@@ -1,5 +1,5 @@
 var props =  {
-  apiBaseUrl: 'http://localhost:8000/fakenews?',
+  apiBaseUrl: 'https://localhost:8000/fakenews?',
   numberOfUrlsPerRequest: 10,
   xhrTimeout: 5000
 };
