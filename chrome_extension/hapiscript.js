@@ -1,5 +1,5 @@
 var props =  {
-  apiBaseUrl: 'https://localhost:8000/fakenews?',
+  apiBaseUrl: 'http://localhost:8000/fakenews?',
   numberOfUrlsPerRequest: 10,
   xhrTimeout: 5000
 };
@@ -79,7 +79,7 @@ function handleTheTruth(toBeTheTruthOrNotToBe, theTruth) {
   console.log("HAHAA THE TRUUTH IS HIAR HARR HARR");
   for(var truthI = 0; truthI < theTruth.length; truthI++) {
     var currentTruth = theTruth[truthI];
-    if (currentTruth.isFake == true) {
+    if (currentTruth.isFake === "true") {
       shameOnYouTheLink(toBeTheTruthOrNotToBe[truthI]);
     }
   }
