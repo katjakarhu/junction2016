@@ -13,5 +13,12 @@
   "permissions": [
     "activeTab",
     "http://localhost:8000/"
+  ],
+  "content_scripts": [
+    {
+      "matches":  ["http://*/*","https://*/*"],
+      "css": ["hapistyles.css"],
+      "js": ["hapiscript.js"]
+    }
   ]
 }
