@@ -30,11 +30,9 @@ class FakeNewsList(generics.ListAPIView):
         
         urlParamList = query_dict.getlist("url")
         #
-        jsonDicts = {}
+        jsonDicts = {"response":[]}
         i = 0
         for urlParam in urlParamList:
-            jsonDicts[i] = {}
-            jsonDicts[i]['url'] = urlParam
             if i%2 == 0:
                 source = "Very Respectable Authority Says So"
                 sourceUrl = "http://www.google.com/"
@@ -43,9 +41,7 @@ class FakeNewsList(generics.ListAPIView):
                 foo = "false"
                 source = "Underpants Gnomes LLC"
                 sourceUrl = "http://www.google.com/"
-            jsonDicts[i]['isFake'] = foo
-            jsonDicts[i]['source'] = source
-            jsonDicts[i]['sourceurl'] = sourceUrl
+            jsonDicts['response'].append({"url":urlParam,"sourceUrl":sourceUrl, "source":source, "isFake":foo})
             i = i + 1
             
         
