@@ -86,6 +86,7 @@ function handleTheTruth(toBeTheTruthOrNotToBe, theTruth) {
 }
 
 function shameOnYouTheLink(shameLink) {
+  console.log("LIIIES ALL LIEES: " + shameLink.href);
   var currentInnerHTML = shameLink.innerHTML
   shameLink.innerHTML = "<span class='warning'>" + currentInnerHTML + "</span>";
 }
