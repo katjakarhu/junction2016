@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var stats;
   getCurrentDocumentOnSelectedTab(function(dom) {
     stats = JSON.parse(dom.getElementById('hapiStats').innerHTML);
+    document.getElementById('no-of-fakes').innerHTML = stats.fakeSiteLinks;
+    document.getElementById('no-of-nc').innerHTML = stats.hateSpeechLinks;
   });
 });
 
