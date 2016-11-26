@@ -45,7 +45,7 @@ site.save()
 site = FakeSite(site='EnduringVision.com')
 site.save()
 
-site = FakeSite(site='www.cc.com/indecision')
+site = FakeSite(site='cc.com/indecision')
 site.save()
 
 site = FakeSite(site='MSNBC.co')
