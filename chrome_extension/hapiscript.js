@@ -1,5 +1,5 @@
 var props =  {
-  apiBaseUrl: 'http://localhost:8000/fakenews?',
+  apiBaseUrl: 'https://localhost:8000/fakenews?',
   numberOfUrlsPerRequest: 10,
   xhrTimeout: 5000
 };
@@ -11,7 +11,6 @@ var hapiStats = {
 
 function startHapi() {
   var documentLinks = document.links;
-  alert(document.links.length);
   var storage =  {"linkStorage":[]};
   var chosenOnes = [];
   for (var i = 0; i < documentLinks.length; i++) {
@@ -64,7 +63,7 @@ function retrieveTheTruthFromTheTruthServer(apiCallUrl, truthCall) {
         truthCall(theTruth);
       } else {
         console.log('HapiError', xhr.statusText);
-        callBack(null);
+        truthCall(null);
       }
     }
   };
@@ -78,11 +77,18 @@ function retrieveTheTruthFromTheTruthServer(apiCallUrl, truthCall) {
 
 function handleTheTruth(toBeTheTruthOrNotToBe, theTruth) {
   console.log("HAHAA THE TRUUTH IS HIAR HARR HARR");
+  for(var truthI = 0; truthI < theTruth.length; truthI++) {
+    var currentTruth = theTruth[truthI];
+    if (currentTruth.isFake == true) {
+      shameOnYouTheLink(toBeTheTruthOrNotToBe[truthI]);
+    }
+  }
 }
 
-    // var currentInnerHTML = links[i].innerHTML
-    // links[i].innerHTML = "<span class='warning'>" + currentInnerHTML + "</span>";
-
+function shameOnYouTheLink(shameLink) {
+  var currentInnerHTML = shameLink.innerHTML
+  shameLink.innerHTML = "<span class='warning'>" + currentInnerHTML + "</span>";
+}
 
 function prepareApiCallUrl(urls, callback) {
   var url = props.apiBaseUrl;
