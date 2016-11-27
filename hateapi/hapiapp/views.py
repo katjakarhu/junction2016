@@ -50,7 +50,7 @@ class FakeNewsList(generics.ListAPIView):
                 domain = domain.partition('.')[2]
            
         
-            filteredSet = self.queryset.filter(site__contains=domain)
+            filteredSet = self.queryset.filter(site__icontains=domain)
             if len(filteredSet) > 0 and domain != "twitter.com":
                 return filteredSet
             else:
