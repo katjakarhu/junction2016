@@ -127,7 +127,6 @@ function protoHapi() {
     }
   }
 
-  alert(JSON.stringify(callJson));
   for (var i = 0; i < callJson.calls.length; i++) {
     retrieveTheTruthFromTheTruthServer(callJson.calls[i].apiCallUrl,i, function(truth,i) {
       if (truth) {
