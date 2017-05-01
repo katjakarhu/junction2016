@@ -1,5 +1,6 @@
 # junction2016
 
+See https://github.com/katjakarhu/HAPI-API for new API implementation
 
 # Running Hapi Server
 
